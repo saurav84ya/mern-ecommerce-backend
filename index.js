@@ -9,7 +9,9 @@ const adminProductsRouters = require("./routes/admin/products-routes")
 dotenv.config();
 
 
-const URL = process.env.MONGODB_URL || "mongodb://localhost:27017";
+const URL = process.env.MONGODB_URL
+
+console.log(process.env.MONGODB_URL)
 
 // Database connection
 mongoose

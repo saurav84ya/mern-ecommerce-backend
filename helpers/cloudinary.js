@@ -2,8 +2,8 @@ const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 
 cloudinary.config({ 
-    cloud_name: process.env.CLOUD_NAME || "drrwidoo4", 
-    api_key: process.env.API_KEY || "224825575337724", 
+    cloud_name: process.env.CLOUD_NAME || "drrwidoo4" ,
+    api_key: process.env.API_KEY || "224825575337724",
     api_secret: process.env.API_SECRET || "NnLJYoX53CFwY3TlELE3omJI2WQ" // Corrected API Secret variable name
 });
 
@@ -20,7 +20,7 @@ async function ImageUploadUtils(fileBuffer) {
             resolve(result);
         });
 
-        uploadStream.end(fileBuffer); // Send the file buffer to Cloudinary
+        uploadStream.end(  fileBuffer); // Send the file buffer to Cloudinary
     });
 }
 
