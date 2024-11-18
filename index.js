@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const authRouter = require("./routes/auth-route");
+const adminProductsRouters = require("./routes/admin/products-routes")
 
 dotenv.config();
 
@@ -29,7 +30,7 @@ app.use(cookieParser());
 // CORS configuration
 app.use(
     cors({
-        origin: ["http://localhost:5174", "https://your-frontend-domain.com"],
+        origin: ["http://localhost:5174","http://localhost:5173", "https://your-frontend-domain.com"],
         methods: ["GET", "POST", "DELETE", "PUT"],
         allowedHeaders: [
             "Content-Type",
@@ -49,6 +50,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/admin/products",adminProductsRouters)
 
 // Catch-all for undefined routes
 app.use((req, res, next) => {
