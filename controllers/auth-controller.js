@@ -122,8 +122,12 @@ const authMiddleware = async (req, res, next) => {
 }
 
 const logoutUser = (req, res) => {
-  console.log("hiii clear")
-  res.clearCookie("token")
+  console.log("Clearing token cookie");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    path: "/", // Make sure this matches the original cookie path
+  });
   res.json({
     success: true,
     message: "Logged out successfully!",

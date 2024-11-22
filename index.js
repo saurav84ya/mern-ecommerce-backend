@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const authRouter = require("./routes/auth-route");
 const adminProductsRouters = require("./routes/admin/products-routes")
+const userProductRouter = require("./routes/user/products-routes-user")
 
 dotenv.config();
 
@@ -53,6 +54,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/admin/products",adminProductsRouters)
+app.use("/api/user/products" , userProductRouter);
 
 // Catch-all for undefined routes
 app.use((req, res, next) => {

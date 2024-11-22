@@ -65,6 +65,7 @@ const addProduct = async (req, res) => {
   
 
   const editProduct = async (req, res) => {
+    console.log("hii edit")
     try {
       const { id } = req.params;
       const { image,title,description, category,brand,
@@ -143,5 +144,7 @@ const addProduct = async (req, res) => {
     }
   }
 
-module.exports = { handleImageUpload , addProduct , fetchAllProducts ,editProduct ,deleteProduct ,fetchUsers };
+
+
+module.exports = { handleImageUpload ,addProduct , fetchAllProducts ,editProduct ,deleteProduct ,fetchUsers };
 

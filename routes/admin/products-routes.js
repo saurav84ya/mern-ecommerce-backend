@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/imageUpload", upload.single('my_file'), handleImageUpload);
 router.post("/addProduct", addProduct); 
-router.post("/fetchAllProducts", fetchAllProducts); 
+router.get("/fetchAllProducts", fetchAllProducts); 
 router.post("/editProducts/:id", editProduct);
 router.delete("/delateProduct/:id", deleteProduct);
 router.get("/fetchUsers", fetchUsers);
