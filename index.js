@@ -7,6 +7,7 @@ const authRouter = require("./routes/auth-route");
 const adminProductsRouters = require("./routes/admin/products-routes")
 const userProductRouter = require("./routes/user/products-routes-user")
 const cartRouter = require("./routes/user/cart-routes")
+const addressRouter = require("./routes/user/address-routes")
 dotenv.config();
 
 
@@ -56,6 +57,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/admin/products",adminProductsRouters)
 app.use("/api/user/products" , userProductRouter);
 app.use("/api/user/cart" ,cartRouter )
+app.use("/api/user/address",addressRouter)
 
 // Catch-all for undefined routes
 app.use((req, res, next) => {
