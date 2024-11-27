@@ -8,6 +8,8 @@ const adminProductsRouters = require("./routes/admin/products-routes")
 const userProductRouter = require("./routes/user/products-routes-user")
 const cartRouter = require("./routes/user/cart-routes")
 const addressRouter = require("./routes/user/address-routes")
+const orderRouter = require('./routes/user/orders-router')
+const adminOrders = require("./routes/admin/order-router")
 dotenv.config();
 
 
@@ -35,7 +37,7 @@ app.use(cookieParser());
 app.use(
     cors({
         origin: ["http://localhost:5174","http://localhost:5173", "https://your-frontend-domain.com"],
-        methods: ["GET", "POST", "DELETE", "PUT"],
+        methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: [
             "Content-Type",
             "Authorization",
@@ -57,7 +59,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/admin/products",adminProductsRouters)
 app.use("/api/user/products" , userProductRouter);
 app.use("/api/user/cart" ,cartRouter )
+app.use('/api/user/order',orderRouter)
 app.use("/api/user/address",addressRouter)
+app.use("/api/admin/adminGetOrders",adminOrders)
+
 
 // Catch-all for undefined routes
 app.use((req, res, next) => {
