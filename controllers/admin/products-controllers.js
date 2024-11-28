@@ -10,7 +10,7 @@ const handleImageUpload = async (req, res) => {
             result
         });
     } catch (error) {
-        console.log("error at handleImageUpload");
+        //("error at handleImageUpload");
         res.json({
             success: false,
             message: "Error at handleImageUpload"
@@ -38,7 +38,7 @@ const addProduct = async (req, res) => {
         data: newlyCreatedProduct,
       });
     } catch (e) {
-      console.log(e);
+      //(e);
       res.status(500).json({
         success: false,
         message :"something went wrong plz Try" ,
@@ -55,7 +55,7 @@ const addProduct = async (req, res) => {
         data: listOfProducts,
       });
     } catch (e) {
-      console.log(e);
+      //(e);
       res.status(500).json({
         success: false,
         message: "Error occured",
@@ -65,7 +65,7 @@ const addProduct = async (req, res) => {
   
 
   const editProduct = async (req, res) => {
-    console.log("hii edit")
+    //("hii edit")
     try {
       const { id } = req.params;
       const { image,title,description, category,brand,
@@ -95,7 +95,7 @@ const addProduct = async (req, res) => {
         data: findProduct,
       });
     } catch (e) {
-      console.log(e);
+      //(e);
       res.status(500).json({
         success: false,
         message: "Error occured",
@@ -104,7 +104,7 @@ const addProduct = async (req, res) => {
   };
 
   const deleteProduct = async (req, res) => {
-    console.log("hii")
+    //("hii")
     try {
       const { id } = req.params;
       const product = await Product.findByIdAndDelete(id);
@@ -120,7 +120,7 @@ const addProduct = async (req, res) => {
         message: "Product delete successfully",
       });
     } catch (e) {
-      console.log(e);
+      //(e);
       res.status(500).json({
         success: false,
         message: "Error occured",

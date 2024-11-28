@@ -36,7 +36,7 @@ const updateOrderStatus = async (req, res) => {
       order: updatedOrder,
     });
   } catch (error) {
-    console.error("Error updating order status:", error);
+    // console.error("Error updating order status:", error);
     return res.status(500).json({ message: "Internal server error." });
   }
 };

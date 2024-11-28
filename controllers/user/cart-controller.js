@@ -119,7 +119,7 @@ const fetchCart = async(req,res) => {
 }
 
 const updateCart = async(req,res) => {
-  console.log("yessss")
+  //("yessss")
     try {
 
         const { userId, productId, quantity } = req.body;

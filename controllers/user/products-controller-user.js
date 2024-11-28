@@ -20,7 +20,7 @@ const getFilteredProducts = async (req, res) => {
 
     res.status(200).json({ success: true, data: products });
   } catch (error) {
-    console.error("Error in getFilteredProducts:", error);
+    // console.error("Error in getFilteredProducts:", error);
     res.status(500).json({ success: false, message: "An error occurred." });
   }
 };
@@ -40,7 +40,7 @@ const getProductDetails = async (req,res) => {
       data : product
     })
   } catch (error) {
-    console.log(error)
+    //(error)
     res.status(500).json({
       success : false ,
       message : "some error occured"

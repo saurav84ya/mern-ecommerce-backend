@@ -20,7 +20,7 @@ console.log(process.env.MONGODB_URL)
 // Database connection
 mongoose
     .connect(URL)
-    .then(() => console.log("DB connected"))
+    // .then(() => console.log("DB connected"))
     .catch((err) => {
         console.log("DB connection failed: ", err);
         process.exit(1); // Exit process if DB connection fails
@@ -74,16 +74,16 @@ const server = app.listen(port, () => console.log(`Server is running at http://l
 
 // Graceful shutdown
 process.on("SIGINT", () => {
-    console.log("Shutting down gracefully...");
+    // console.log("Shutting down gracefully...");
     server.close(() => {
         mongoose.connection.close(() => {
-            console.log("MongoDB connection closed.");
+            // console.log("MongoDB connection closed.");
             process.exit(0);
         });
     });
 });
 
 process.on("unhandledRejection", (err) => {
-    console.error("Unhandled Promise Rejection:", err);
+    // console.error("Unhandled Promise Rejection:", err);
     process.exit(1);
 });

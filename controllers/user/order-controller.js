@@ -12,11 +12,11 @@ const newOrder = async (req, res) => {
  
         // Extract product IDs from the request
         const productIds = productsListWithQuantity.map((item) => item.productId);
-        // console.log("productIds",productIds)
+        // //("productIds",productIds)
 
         // Fetch all products in one query
         const products = await Product.find({ _id: { $in: productIds } });
-        // console.log("products",products)
+        // //("products",products)
 
 
         if (products.length !== productsListWithQuantity.length) {
@@ -25,7 +25,7 @@ const newOrder = async (req, res) => {
 
         // Calculate total price and prepare items array
         let totalPrice = 0;
-        // console.log("productsListWithQuantity" , productsListWithQuantity)
+        // //("productsListWithQuantity" , productsListWithQuantity)
 
         const items = productsListWithQuantity.map((item) => {
             const product = products.find((p) => p._id.toString() === item.productId);
@@ -37,7 +37,7 @@ const newOrder = async (req, res) => {
             if (item.quantity <= 0) {
                 throw new Error(`Invalid quantity for product ID ${item.productId}`);
             }
-                // console.log(( product.price * item.quantity))
+                // //(( product.price * item.quantity))
             totalPrice = totalPrice + ( product.salePrice * item.quantity);
             return {
                 productId: product._id,

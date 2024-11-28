@@ -46,7 +46,7 @@ const register = async (req, res) => {
       },
     });
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     res.status(500).json({
       success: false,
       message: "Some error occurred, please try again later.",
@@ -95,7 +95,7 @@ const login = async (req, res) => {
       },
     });
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     res.status(500).json({
       success: false,
       message: "Some error occurred, please try again later.",
@@ -122,7 +122,7 @@ const authMiddleware = async (req, res, next) => {
 }
 
 const logoutUser = (req, res) => {
-  console.log("Clearing token cookie");
+  // console.log("Clearing token cookie");
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
