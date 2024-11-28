@@ -3,32 +3,28 @@ const Order = require("../../models/orders-model")
 
 
 const adminGetAllOrders = async(req,res) =>{
-    const orders = await Order.find(); // Use find() to fetch all orders
+    const orders = await Order.find(); 
     res.json(orders)
 }
 
 
-// Controller to update order status
 const updateOrderStatus = async (req, res) => {
   const { orderId, status } = req.body;
-    console.log( orderId, status)
-  // Validate input
+
   if (!orderId || !status) {
     return res.status(400).json({ message: "Order ID and status are required." });
   }
 
-  // Check if the provided status is valid
   const validStatuses = ["pending", "processing", "shipped", "rejected", "delivered"];
   if (!validStatuses.includes(status)) {
     return res.status(400).json({ message: `Invalid status. Valid statuses are: ${validStatuses.join(", ")}` });
   }
 
   try {
-    // Find and update the order
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       { status },
-      { new: true } // Return the updated document
+      { new: true } 
     );
 
     if (!updatedOrder) {

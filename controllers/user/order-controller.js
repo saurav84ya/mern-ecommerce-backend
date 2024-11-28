@@ -12,16 +12,21 @@ const newOrder = async (req, res) => {
  
         // Extract product IDs from the request
         const productIds = productsListWithQuantity.map((item) => item.productId);
+        // console.log("productIds",productIds)
 
         // Fetch all products in one query
         const products = await Product.find({ _id: { $in: productIds } });
+        // console.log("products",products)
+
 
         if (products.length !== productsListWithQuantity.length) {
             return res.json({  success : false , message :"some products are not avlabile" });
         }
 
         // Calculate total price and prepare items array
-        let totalPrice = -200;
+        let totalPrice = 0;
+        // console.log("productsListWithQuantity" , productsListWithQuantity)
+
         const items = productsListWithQuantity.map((item) => {
             const product = products.find((p) => p._id.toString() === item.productId);
             if (!product) {
@@ -32,11 +37,12 @@ const newOrder = async (req, res) => {
             if (item.quantity <= 0) {
                 throw new Error(`Invalid quantity for product ID ${item.productId}`);
             }
-
-            totalPrice += product.price * item.quantity;
+                // console.log(( product.price * item.quantity))
+            totalPrice = totalPrice + ( product.salePrice * item.quantity);
             return {
                 productId: product._id,
                 quantity: item.quantity,
+                image :product.image
             };
         });
 
@@ -85,7 +91,6 @@ const fetchOrders = async (req, res) => {
             orders,
         });
     } catch (error) {
-        console.error("Error fetching orders:", error.message); // Log the error for debugging
         res.status(500).json({
             success: false,
             message: "An error occurred while fetching orders",
