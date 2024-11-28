@@ -1,8 +1,9 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
 const authRouter = require("./routes/auth-route");
 const adminProductsRouters = require("./routes/admin/products-routes")
 const userProductRouter = require("./routes/user/products-routes-user")
@@ -10,17 +11,20 @@ const cartRouter = require("./routes/user/cart-routes")
 const addressRouter = require("./routes/user/address-routes")
 const orderRouter = require('./routes/user/orders-router')
 const adminOrders = require("./routes/admin/order-router")
-dotenv.config();
+
+
+// console.log("Environment Variables:", process.env);
 
 
 const URL = process.env.MONGODB_URL
 
-console.log(process.env.MONGODB_URL)
+// console.log(process.env.MONGODB_URL)
+
 
 // Database connection
 mongoose
     .connect(URL)
-    // .then(() => console.log("DB connected"))
+    .then(() => console.log("DB connected"))
     .catch((err) => {
         console.log("DB connection failed: ", err);
         process.exit(1); // Exit process if DB connection fails

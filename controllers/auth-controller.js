@@ -32,7 +32,7 @@ const register = async (req, res) => {
         userName: newUser.userName,
       },
       process.env.CLIENT_SECRET_KEY,
-      { expiresIn: "60m" }
+      { expiresIn: "360000m" }
     );
 
     res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" }).json({
@@ -57,9 +57,11 @@ const register = async (req, res) => {
 // Login
 const login = async (req, res) => {
   const { email, password } = req.body;
+  // console.log(email, password )
 
   try {
     const checkUser = await User.findOne({ email });
+    // console.log(checkUser)
     if (!checkUser)
       return res.status(404).json({
         success: false,
@@ -67,6 +69,7 @@ const login = async (req, res) => {
       });
 
     const checkPasswordMatch = await bcrypt.compare(password, checkUser.password);
+    // console.log(checkPasswordMatch)
     if (!checkPasswordMatch)
       return res.status(401).json({
         success: false,
@@ -81,7 +84,7 @@ const login = async (req, res) => {
         userName: checkUser.userName,
       },
       process.env.CLIENT_SECRET_KEY,
-      // { expiresIn: "60m" }
+      { expiresIn: "600000000m" }
     );
 
     res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" }).json({

@@ -12,4 +12,4 @@ const ProductSchima = new mongoose.Schema({
     averageReview : Number
 } , {timestamps :true})
 
-  module.exports = mongoose.model("Product" , ProductSchima);
+  module.exports = mongoose.model("ecommerseProduct" , ProductSchima);
