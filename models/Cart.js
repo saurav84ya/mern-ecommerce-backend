@@ -24,4 +24,4 @@ const CartSchima = new Schema({
     timestamps : true
 } )
 
-module.exports = model("ecommersecart",CartSchima)
+module.exports = model("Cart",CartSchima)

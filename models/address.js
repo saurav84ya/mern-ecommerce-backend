@@ -9,4 +9,4 @@ const addressSchima = new Schema({
     notes : String
 },{timestamps : true})
 
-module.exports = model('ecommerseAddress' , addressSchima)
+module.exports = model('Address' , addressSchima)

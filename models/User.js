@@ -21,5 +21,5 @@ const userSchima = new mongoose.Schema({
 
 })
 
-const User = mongoose.model("ecommerseUser" , userSchima)
+const User = mongoose.model("EcUser" , userSchima)
 module.exports = User

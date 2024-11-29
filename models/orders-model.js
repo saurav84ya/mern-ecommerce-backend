@@ -46,4 +46,4 @@ const ordersSchema = new Schema(
     { timestamps: true }
 );
 
-module.exports = model("ecommerseOrder", ordersSchema);
+module.exports = model("Order", ordersSchema);
