@@ -40,7 +40,7 @@ app.use(cookieParser());
 // CORS configuration
 app.use(
     cors({
-        origin: ["http://localhost:5174","http://localhost:5173", "https://your-frontend-domain.com","https://mern-ecommerce-frontend-alpha-blue.vercel.app"],
+        origin: ["https://your-frontend-domain.com","https://mern-ecommerce-frontend-alpha-blue.vercel.app" "https://classy-narwhal-1b4e59.netlify.app/"],
         // origin: "*",
         methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: [
