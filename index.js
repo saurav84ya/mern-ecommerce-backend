@@ -40,7 +40,7 @@ app.use(cookieParser());
 // CORS configuration
 app.use(
     cors({
-        origin: ["https://mern-eccomerse.netlify.app"],
+        origin: ['https://mern-eccomerse.netlify.app'],
         // origin: "*",
         methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: [
