@@ -13,6 +13,7 @@ const orderRouter = require('./routes/user/orders-router')
 const adminOrders = require("./routes/admin/order-router");
 const reviewRouter = require('./routes/reviewRouter')
 const { fetchUserPurchaseProducts } = require("./controllers/review-controller");
+const { searchProducts } = require("./controllers/search-controller");
 
 
 // console.log("Environment Variables:", process.env);
@@ -42,7 +43,7 @@ app.use(cookieParser());
 // CORS configuration
 app.use(
     cors({
-        origin: ['https://mern-eccomerse.netlify.app' , 'http://localhost:5173'],
+        origin: ['https://mern-eccomerse.netlify.app' , 'http://localhost:5173','http://localhost:5176'],
         // origin: "*",
         methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: [
@@ -72,6 +73,7 @@ app.use('/api/user/order',orderRouter)
 app.use("/api/user/address",addressRouter)
 app.use("/api/admin/adminGetOrders",adminOrders)
 app.use("/api/reviews" , reviewRouter)
+app.get("/api/search/:keyword", searchProducts)
 
 
 // Catch-all for undefined routes
