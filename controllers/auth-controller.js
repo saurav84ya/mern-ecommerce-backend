@@ -7,7 +7,7 @@ const register = async (req, res) => {
   const { userName, email, password } = req.body;
 
   try {
-    // Input Validation (basic example)
+    // Input Validation
     if (!userName || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -16,8 +16,8 @@ const register = async (req, res) => {
     }
 
     // Check if user already exists
-    const checkUser = await User.findOne({ email });
-    if (checkUser) {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res.status(409).json({
         success: false,
         message: "Email is already registered. Please use a different email.",
@@ -25,13 +25,13 @@ const register = async (req, res) => {
     }
 
     // Hash password
-    const hashPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     // Create new user
     const newUser = new User({
       userName,
       email,
-      password: hashPassword,
+      password: hashedPassword,
     });
     await newUser.save();
 
@@ -44,13 +44,13 @@ const register = async (req, res) => {
         userName: newUser.userName,
       },
       process.env.CLIENT_SECRET_KEY,
-      { expiresIn: "15m" } // Short-lived token
+      { expiresIn: "7d" } // Token valid for 7 days
     );
 
     // Set HttpOnly cookie for token
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Enable in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -66,8 +66,8 @@ const register = async (req, res) => {
         userName: newUser.userName,
       },
     });
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error("Registration Error:", error);
     res.status(500).json({
       success: false,
       message: "Some error occurred. Please try again later.",
@@ -78,48 +78,54 @@ const register = async (req, res) => {
 // Login
 const login = async (req, res) => {
   const { email, password } = req.body;
-  // console.log(email, password )
 
   try {
-    const checkUser = await User.findOne({ email });
-    // console.log(checkUser)
-    if (!checkUser)
+    const user = await User.findOne({ email });
+    if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User doesn't exist! Please register first",
+        message: "User doesn't exist! Please register first.",
       });
+    }
 
-    const checkPasswordMatch = await bcrypt.compare(password, checkUser.password);
-    // console.log(checkPasswordMatch)
-    if (!checkPasswordMatch)
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: "Incorrect password! Please try again",
+        message: "Incorrect password! Please try again.",
       });
+    }
 
     const token = jwt.sign(
       {
-        id: checkUser._id,
-        role: checkUser.role,
-        email: checkUser.email,
-        userName: checkUser.userName,
+        id: user._id,
+        role: user.role,
+        email: user.email,
+        userName: user.userName,
       },
       process.env.CLIENT_SECRET_KEY,
-      { expiresIn: "600000000m" }
+      { expiresIn: "7d" } // Token valid for 7 days
     );
 
-    res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" }).json({
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res.status(200).json({
       success: true,
       message: "Logged in successfully",
       user: {
-        email: checkUser.email,
-        role: checkUser.role,
-        id: checkUser._id,
-        userName: checkUser.userName,
+        email: user.email,
+        role: user.role,
+        id: user._id,
+        userName: user.userName,
       },
     });
-  } catch (e) {
-    // console.error(e);
+  } catch (error) {
+    console.error("Login Error:", error);
     res.status(500).json({
       success: false,
       message: "Some error occurred, please try again later.",
@@ -127,36 +133,42 @@ const login = async (req, res) => {
   }
 };
 
-const authMiddleware = async (req, res, next) => {
+// Middleware to Authenticate User
+const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
-  if(!token) return res.status(401).json({
-    success: false,
-    message : "Unauthrosid user!"
-  })
+
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized user!",
+    });
+  }
 
   try {
-    const decoded = jwt.verify(token,process.env.CLIENT_SECRET_KEY)
-    req.user = decoded
-    next()
+    const decoded = jwt.verify(token, process.env.CLIENT_SECRET_KEY);
+    req.user = decoded;
+    next();
   } catch (error) {
-   res.status(401).json({
-    success : false ,
-   }) 
+    res.status(401).json({
+      success: false,
+      message: "Invalid or expired token.",
+    });
   }
-}
+};
 
+// Logout
 const logoutUser = (req, res) => {
-  // console.log("Clearing token cookie");
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    path: "/", // Make sure this matches the original cookie path
+    sameSite: "Strict",
+    path: "/",
   });
-  res.json({
+
+  res.status(200).json({
     success: true,
     message: "Logged out successfully!",
   });
 };
 
-
-module.exports = { register, login , logoutUser , authMiddleware };
+module.exports = { register, login, logoutUser, authMiddleware };
