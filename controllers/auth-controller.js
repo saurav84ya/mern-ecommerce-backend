@@ -5,25 +5,37 @@ const User = require("../models/User");
 // Register
 const register = async (req, res) => {
   const { userName, email, password } = req.body;
-  // console.log( userName, email, password)
 
   try {
-    const checkUser = await User.findOne({ email });
-    if (checkUser)
-      return res.json({
+    // Input Validation (basic example)
+    if (!userName || !email || !password) {
+      return res.status(400).json({
         success: false,
-        message: "User already exists with the same email! Please use a different one",
+        message: "All fields are required.",
       });
+    }
 
+    // Check if user already exists
+    const checkUser = await User.findOne({ email });
+    if (checkUser) {
+      return res.status(409).json({
+        success: false,
+        message: "Email is already registered. Please use a different email.",
+      });
+    }
+
+    // Hash password
     const hashPassword = await bcrypt.hash(password, 12);
+
+    // Create new user
     const newUser = new User({
       userName,
       email,
       password: hashPassword,
     });
-
     await newUser.save();
 
+    // Generate JWT token
     const token = jwt.sign(
       {
         id: newUser._id,
@@ -32,10 +44,19 @@ const register = async (req, res) => {
         userName: newUser.userName,
       },
       process.env.CLIENT_SECRET_KEY,
-      { expiresIn: "360000m" }
+      { expiresIn: "15m" } // Short-lived token
     );
 
-    res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" }).json({
+    // Set HttpOnly cookie for token
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Enable in production
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    // Send response
+    res.status(201).json({
       success: true,
       message: "Registered successfully",
       user: {
@@ -46,10 +67,10 @@ const register = async (req, res) => {
       },
     });
   } catch (e) {
-    // console.error(e);
+    console.error(e);
     res.status(500).json({
       success: false,
-      message: "Some error occurred, please try again later.",
+      message: "Some error occurred. Please try again later.",
     });
   }
 };
