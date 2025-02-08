@@ -21,7 +21,7 @@ async function ImageUploadUtils(fileBuffer) {
             resolve(result);
         });
 
-        uploadStream.end(  fileBuffer); // Send the file buffer to Cloudinary
+        uploadStream.end(  fileBuffer); 
     });
 }
 
