@@ -16,7 +16,6 @@ const { fetchUserPurchaseProducts } = require("./controllers/review-controller")
 const { searchProducts } = require("./controllers/search-controller");
 
 
-// console.log("Environment Variables:", process.env);
 
 
 const URL = process.env.MONGODB_URL
